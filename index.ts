@@ -22,6 +22,9 @@ const accountKey = require(ACCOUNT_KEY_LOCATION);
 const saveFile = async (file: File) => {
   const [buffer] = await file.download();
   if (!Array.isArray(buffer)) {
-    await outputFile(`${DOWNLOAD_LOCATION}/${file.name}`, buffer)
+    const nameArray = file.name.split('/');
+    const fileName = nameArray.pop();
+    nameArray.push(`${file.metadata.timeCreated}-${fileName}`);
+    await outputFile(`${DOWNLOAD_LOCATION}/${nameArray.join('/')}`, buffer)
   }
 }
